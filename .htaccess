@@ -1,0 +1,29 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Redirect all requests to index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+
+# Session settings
+php_value session.gc_maxlifetime 1440
+php_value session.cookie_httponly 1
+php_value session.cookie_secure 1
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Deny access to the .htaccess file
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+# Deny access to the config.php file
+<Files "config.php">
+    Require all denied
+</Files>
